@@ -1,5 +1,7 @@
 using HealthJournal.Data;
+using HealthJournal.Interfaces;
 using HealthJournal.Models;
+using HealthJournal.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +23,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 12;
+    options.User.RequireUniqueEmail = true;
 }).AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddAuthentication(options =>
@@ -45,6 +48,8 @@ builder.Services.AddAuthentication(options =>
         )
     };
 });
+
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
