@@ -6,9 +6,9 @@ namespace HealthJournal.Models
     {
         [Key]
         public int Id { get; set; }
-        public DateTime VisitDate { get; set; }
+        public DateTime Date { get; set; }
+        public int PatientId { get; set; }  // Foreign key
         public Patient Patient { get; set; }
-        public List<Observation> Observations { get; set; }
-
+        public ICollection<Observation> Observations { get; set; } = new List<Observation>();
     }
 }
