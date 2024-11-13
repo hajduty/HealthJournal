@@ -26,14 +26,14 @@ namespace HealthJournal.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email.ToLower());
-            
+
             if (user == null) return Unauthorized("Invalid email");
-            
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-            
+
             if (!result.Succeeded) return Unauthorized("Password or email incorrect");
-            
-            var newUser = new NewUserDto{ Email = user.Email, Token = _tokenService.CreateToken(user)};
+
+            var newUser = new NewUserDto { Email = user.Email, Token = _tokenService.CreateToken(user) };
             return Ok(newUser);
         }
 
