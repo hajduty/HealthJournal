@@ -2,11 +2,8 @@
 
 namespace HealthJournal.Interfaces
 {
-    public interface IObservationRepository
+    public interface IObservationRepository : IRepository<Observation>
     {
-        Observation GetObservation(int id);
-        Observation UpdateObservation(int id, Observation observation);
-        Observation CreateObservation(Observation observation);
-        ICollection<Observation> GetObservationsForUser(int userId);
+        ICollection<Observation> GetObservationsForUser(string userId);
     }
 }

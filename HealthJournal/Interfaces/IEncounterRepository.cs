@@ -2,11 +2,9 @@
 
 namespace HealthJournal.Interfaces
 {
-    public interface IEncounterRepository
+    public interface IEncounterRepository : IRepository<Encounter>
     {
-        Encounter GetEncounter(int id);
-        Encounter CreateEncounter(Encounter encounter);
-        Encounter UpdateEncounter(int id,  Encounter encounter);
-        bool DeleteEncounter(int id);
+        ICollection<Encounter> GetEncounters(string userId);
+        Encounter GetEncountersWithObservations(int encounterId);
     }
 }

@@ -2,12 +2,9 @@
 
 namespace HealthJournal.Interfaces
 {
-    public interface IMessageRepository
+    public interface IMessageRepository : IRepository<Message>
     {
-        Message GetMessage(int id);
-        Message CreateMessage(Message message);
-        Message UpdateMessage(int id, Message message);
-        ICollection<Message> GetReceivedMessages(int userId);
-        ICollection<Message> GetSentMessages(int userId);
+        ICollection<Message> GetReceivedMessages(string userId);
+        ICollection<Message> GetSentMessages(string userId);
     }
 }

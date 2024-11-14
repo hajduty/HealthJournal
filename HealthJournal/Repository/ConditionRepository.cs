@@ -4,47 +4,15 @@ using HealthJournal.Models;
 
 namespace HealthJournal.Repository
 {
-    public class ConditionRepository : IConditionRepository
+    public class ConditionRepository : Repository<Condition>, IConditionRepository
     {
-        public readonly AppDbContext _dbContext;
-        public ConditionRepository(AppDbContext dbContext)
+        public ConditionRepository(AppDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
-        public Condition CreateCondition(Condition condition)
+        public ICollection<Condition> GetConditions(int patientId)
         {
-            return _dbContext.Conditions.Add(condition).Entity;
-        }
-
-        public Condition GetCondition(int id)
-        {
-            return _dbContext.Conditions.Find(id)!;
-        }
-
-        public Condition UpdateCondition(int id, Condition condition)
-        {
-            Condition oldCondition = _dbContext.Conditions.Find(id)!;
-
-            if (oldCondition != null)
-            {
-                _dbContext.Entry(oldCondition).CurrentValues.SetValues(condition);
-                _dbContext.SaveChanges();
-            }
-            return oldCondition!;
-        }
-
-        public bool DeleteCondition(int id)
-        {
-            var condition = GetCondition(id);
-
-            if (condition != null)
-            {
-                _dbContext.Conditions.Remove(condition);
-                _dbContext.SaveChanges();
-                return true;
-            }
-            return false;
+            return _dbContext.Conditions.Where(p => p.PatientId == patientId).ToList();
         }
     }
 }

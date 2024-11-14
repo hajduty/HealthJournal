@@ -2,11 +2,8 @@
 
 namespace HealthJournal.Interfaces
 {
-    public interface IPatientRepository
+    public interface IPatientRepository : IRepository<Patient>
     {
-        Patient GetPatient(int id);
-        Patient UpdatePatient(int id, Patient patient);
-        Patient CreatePatient(Patient patient);
         ICollection<Patient> GetAllPatients();
     }
 }

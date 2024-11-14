@@ -1,12 +1,11 @@
 ﻿using HealthJournal.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HealthJournal.Interfaces
 {
-    public interface IConditionRepository
+    public interface IConditionRepository : IRepository<Condition>
     {
-        Condition GetCondition(int id);
-        Condition CreateCondition(Condition condition);
-        Condition UpdateCondition(int id, Condition condition);
-        bool DeleteCondition(int id);
+        ICollection<Condition> GetConditions(int patientId);
     }
 }

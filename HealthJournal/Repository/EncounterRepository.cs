@@ -1,52 +1,25 @@
 ﻿using HealthJournal.Data;
 using HealthJournal.Interfaces;
 using HealthJournal.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HealthJournal.Repository
 {
-    public class EncounterRepository : IEncounterRepository
+    public class EncounterRepository : Repository<Encounter>, IEncounterRepository
     {
-        private readonly AppDbContext _dbContext;
-        public EncounterRepository(AppDbContext dbContext)
+        public EncounterRepository(AppDbContext dbContext) : base(dbContext)
         {
-            _dbContext = dbContext;
         }
 
-        public Encounter CreateEncounter(Encounter encounter)
+        public ICollection<Encounter> GetEncounters(string userId)
         {
-            return _dbContext.Encounters.Add(encounter).Entity;
+            return _dbContext.Encounters.Where(e => e.Patient.UserId == userId).ToList();
         }
 
-        public bool DeleteEncounter(int id)
+        public Encounter GetEncountersWithObservations(int encounterId)
         {
-            var encounter = _dbContext.Encounters.SingleOrDefault(p => p.Id == id);
-
-            if (encounter != null)
-            {
-                _dbContext.Remove(encounter);
-                _dbContext.SaveChanges();
-                return true;
-            }
-
-            return false;
+            return _dbContext.Encounters.Include(e => e.Observations).FirstOrDefault(e => e.Id == encounterId);
         }
 
-        public Encounter GetEncounter(int id)
-        {
-            return _dbContext.Encounters.Find(id)!;
-        }
-
-        public Encounter UpdateEncounter(int id, Encounter encounter)
-        {
-            var oldEncounter = GetEncounter(id);
-
-            if (encounter != null)
-            {
-                _dbContext.Entry(oldEncounter).CurrentValues.SetValues(encounter);
-                _dbContext.SaveChanges();
-            }
-
-            return oldEncounter;
-        }
     }
 }
