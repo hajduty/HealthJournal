@@ -75,44 +75,68 @@ namespace HealthJournal.Data
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<User>().HasData(
-                new User { Id = "user1", UserName = "user1@example.com", Email = "user1@example.com" },
-                new User { Id = "user2", UserName = "user2@example.com", Email = "user2@example.com" },
-                new User { Id = "user3", UserName = "user3@example.com", Email = "user3@example.com" }
-            );
+            for (int i = 1; i <= 100; i++)
+            {
+                modelBuilder.Entity<User>().HasData(
+                    new User
+                    {
+                        Id = $"user{i}",
+                        UserName = $"user{i}@example.com",
+                        Email = $"user{i}@example.com"
+                    }
+                );
 
-            modelBuilder.Entity<Message>().HasData(
-                new { Id = 1, ReceiverId = "user1", SenderId = "user2", Info = "Follow-up appointment scheduled.", Date = DateTime.Now.AddDays(-3) },
-                new { Id = 2, ReceiverId = "user2", SenderId = "user1", Info = "Please bring medical reports.", Date = DateTime.Now.AddDays(-2) },
-                new { Id = 3, ReceiverId = "user3", SenderId = "user1", Info = "Lab results ready.", Date = DateTime.Now.AddDays(-1) }
-            );
+                modelBuilder.Entity<Message>().HasData(
+                    new Message
+                    {
+                        Id = i,
+                        ReceiverId = $"user{i % 3 + 1}", // Cycling through user1, user2, user3
+                        SenderId = $"user{(i + 1) % 3 + 1}", // Cycling through user1, user2, user3
+                        Info = $"Message {i} info",
+                        Date = DateTime.Now.AddDays(-i) // Adjust date based on index
+                    }
+                );
 
-            modelBuilder.Entity<Patient>().HasData(
-                new { Id = 1, FirstName = "John", LastName = "Doe", Age = 45, UserId = "user1" },
-                new { Id = 2, FirstName = "Jane", LastName = "Smith", Age = 32, UserId = "user2" },
-                new { Id = 3, FirstName = "Tom", LastName = "Brown", Age = 28, UserId = "user3" }
-            );
+                modelBuilder.Entity<Patient>().HasData(
+                    new Patient
+                    {
+                        Id = i,
+                        FirstName = $"FirstName{i}",
+                        LastName = $"LastName{i}",
+                        Age = 20 + (i % 50), // Random age between 20 and 69
+                        UserId = $"user{i % 100 + 1}"
+                    }
+                );
 
-            // Seed for Conditions
-            modelBuilder.Entity<Condition>().HasData(
-                new { Id = 1, ConditionName = "Hypertension", PatientId = 1 },
-                new { Id = 2, ConditionName = "Diabetes", PatientId = 2 },
-                new { Id = 3, ConditionName = "Asthma", PatientId = 3 }
-            );
+                modelBuilder.Entity<Condition>().HasData(
+                    new Condition
+                    {
+                        Id = i,
+                        ConditionName = $"Condition {i}",
+                        PatientId = i
+                    }
+                );
 
-            // Seed for Encounters
-            modelBuilder.Entity<Encounter>().HasData(
-                new { Id = 1, Date = DateTime.Now.AddMonths(-1), PatientId = 1 },
-                new { Id = 2, Date = DateTime.Now.AddMonths(-2), PatientId = 2 },
-                new { Id = 3, Date = DateTime.Now.AddMonths(-1).AddDays(5), PatientId = 3 }
-            );
+                modelBuilder.Entity<Encounter>().HasData(
+                    new Encounter
+                    {
+                        Id = i,
+                        Date = DateTime.Now.AddMonths(-i),
+                        PatientId = i
+                    }
+                );
 
-            // Seed for Observations
-            modelBuilder.Entity<Observation>().HasData(
-                new { Id = 1, Type = "Blood Pressure", Value = 130.5, PatientId = 1, EncounterId = 1 },
-                new { Id = 2, Type = "Blood Sugar", Value = 7.5, PatientId = 2, EncounterId = 2 },
-                new { Id = 3, Type = "Peak Flow", Value = 350.0, PatientId = 3, EncounterId = 3 }
-            );
+                modelBuilder.Entity<Observation>().HasData(
+                    new Observation
+                    {
+                        Id = i,
+                        Type = $"Observation Type {i}",
+                        Value = 50 + (i % 100), // Some random value
+                        PatientId = i,
+                        EncounterId = i
+                    }
+                );
+            }
         }
     }
 }
