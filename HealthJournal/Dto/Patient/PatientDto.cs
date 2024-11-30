@@ -1,7 +1,4 @@
-﻿using HealthJournal.Models;
-using System.ComponentModel.DataAnnotations;
-
-namespace HealthJournal.Dto
+﻿namespace HealthJournal.Dto
 {
     public class PatientDto
     {
@@ -10,6 +7,5 @@ namespace HealthJournal.Dto
         public string LastName { get; set; }
         public int Age { get; set; }
         public string? UserId { get; set; }
-        public User User { get; set; }
     }
 }

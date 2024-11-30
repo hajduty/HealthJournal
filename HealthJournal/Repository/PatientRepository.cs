@@ -1,8 +1,8 @@
 ﻿using HealthJournal.Data;
+using HealthJournal.Dto;
 using HealthJournal.Dto.Patient;
 using HealthJournal.Interfaces;
 using HealthJournal.Models;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HealthJournal.Repository
 {
@@ -30,10 +30,12 @@ namespace HealthJournal.Repository
             var data = filteredPatients
                             .Skip((page - 1) * pageSize)
                             .Take(pageSize)
-                            .Select(p => new PatientSearchDto
+                            .Select(p => new PatientDto
                             {
                                 UserId = p.UserId,
-                                FullName = p.FirstName + " " + p.LastName,
+                                FirstName = p.FirstName,
+                                LastName = p.LastName,
+                                Id = p.Id,
                                 Age = p.Age
                             }).ToList();
 

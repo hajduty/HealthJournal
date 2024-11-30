@@ -2,7 +2,7 @@
 {
     public class SearchResultDto
     {
-        public ICollection<PatientSearchDto> Patients { get; set; }
+        public ICollection<PatientDto> Patients { get; set; }
         public int TotalCount { get; set; }
     }
 }

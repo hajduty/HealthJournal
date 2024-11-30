@@ -5,6 +5,6 @@ namespace HealthJournal.Interfaces
     public interface IEncounterRepository : IRepository<Encounter>
     {
         ICollection<Encounter> GetEncounters(string userId);
-        Encounter GetEncountersWithObservations(int encounterId);
+        Encounter GetEncounterWithObservations(int encounterId);
     }
 }

@@ -1,13 +1,7 @@
-﻿using HealthJournal.Dto;
-using HealthJournal.Dto.Account;
-using HealthJournal.Dto.Patient;
-using HealthJournal.Interfaces;
-using HealthJournal.Models;
-using HealthJournal.Repository;
+﻿using HealthJournal.Interfaces;
+using HealthJournal.Mappers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Protocols.Configuration;
 
 namespace HealthJournal.Controllers
 {
@@ -19,6 +13,36 @@ namespace HealthJournal.Controllers
         public PatientController(IPatientRepository patientRepository)
         {
             _patientRepository = patientRepository;
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetFromId(int id)
+        {
+            var patient = _patientRepository.Get(id);
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            var dto = PatientMapper.PatientToDto(patient);
+
+            return Ok(dto);
+        }
+
+        [HttpGet("detailed/{id}")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult GetDetailedFromId(int id)
+        {
+            var patient = _patientRepository.Get(id);
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            var dto = PatientMapper.PatientToDto(patient);
+
+            return Ok(dto);
         }
 
         [HttpGet("getAll")]

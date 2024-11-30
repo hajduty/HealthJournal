@@ -16,9 +16,9 @@ namespace HealthJournal.Repository
             return _dbContext.Encounters.Where(e => e.Patient.UserId == userId).ToList();
         }
 
-        public Encounter GetEncountersWithObservations(int encounterId)
+        public Encounter GetEncounterWithObservations(int encounterId)
         {
-            return _dbContext.Encounters.Include(e => e.Observations).FirstOrDefault(e => e.Id == encounterId);
+            return _dbContext.Encounters.Include(e => e.Observations).FirstOrDefault(e => e.Id == encounterId)!;
         }
 
     }
