@@ -1,5 +1,8 @@
 ﻿using HealthJournal.Data;
+using HealthJournal.Dto.Encounter;
+using HealthJournal.Dto.Patient;
 using HealthJournal.Interfaces;
+using HealthJournal.Mappers;
 using HealthJournal.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,15 +14,29 @@ namespace HealthJournal.Repository
         {
         }
 
-        public ICollection<Encounter> GetEncounters(string userId)
+        public EncounterSearchDto GetEncounters(int patientId, int page = 1, int pageSize = 10)
         {
-            return _dbContext.Encounters.Where(e => e.Patient.UserId == userId).ToList();
+            var encounters = _dbContext.Encounters.Where(e => e.Patient.Id == patientId);
+
+            var filteredData = encounters.Skip((page - 1) * pageSize)
+                                         .Take(pageSize)
+                                         .OrderBy(e => e.Date)
+                                         .ToList();
+
+            var data = EncounterMapper.ToEncounterDtos(filteredData);
+
+            var result = new EncounterSearchDto()
+            {
+                Encounters = data,
+                TotalCount = filteredData.Count()
+            };
+
+            return result;
         }
 
         public Encounter GetEncounterWithObservations(int encounterId)
         {
             return _dbContext.Encounters.Include(e => e.Observations).FirstOrDefault(e => e.Id == encounterId)!;
         }
-
     }
 }

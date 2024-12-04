@@ -1,10 +1,11 @@
-﻿using HealthJournal.Models;
+﻿using HealthJournal.Dto.Encounter;
+using HealthJournal.Models;
 
 namespace HealthJournal.Interfaces
 {
     public interface IEncounterRepository : IRepository<Encounter>
     {
-        ICollection<Encounter> GetEncounters(string userId);
+        EncounterSearchDto GetEncounters(int patientId, int page, int pageSize);
         Encounter GetEncounterWithObservations(int encounterId);
     }
 }

@@ -23,9 +23,9 @@ namespace HealthJournal.Controllers
 
         [HttpGet("encounters")]
         [Authorize(Roles = "Admin")]
-        public IActionResult GetEncounters([FromQuery] string userId)
+        public IActionResult GetEncounters([FromQuery] int patientId, int page, int pageSize)
         {
-            var encounters = _encounterRepository.GetEncounters(userId);
+            var encounters = _encounterRepository.GetEncounters(patientId, page, pageSize);
 
             if (encounters != null)
             {
@@ -33,8 +33,9 @@ namespace HealthJournal.Controllers
             }
             return NotFound();
         }
-
+        
         [HttpPost("add")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddEncounter([FromBody] EncounterDto encounter)
         {
             if (!ModelState.IsValid)

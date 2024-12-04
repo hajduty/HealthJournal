@@ -1,4 +1,5 @@
 ﻿using HealthJournal.Dto.Encounter;
+using HealthJournal.Dto.Observation;
 using HealthJournal.Models;
 
 namespace HealthJournal.Mappers
@@ -23,6 +24,11 @@ namespace HealthJournal.Mappers
                 Observations = ObservationMapper.ToObservationDtos(encounter.Observations),
                 PatientId = encounter.PatientId,
             };
+        }
+
+        public static ICollection<EncounterDto> ToEncounterDtos(ICollection<Encounter> encounter)
+        {
+            return encounter.Select(encounter => ToEncounterDto(encounter)).ToList();
         }
     }
 }
