@@ -16,7 +16,7 @@ namespace HealthJournal.Repository
 
         public EncounterSearchDto GetEncounters(int patientId, int page = 1, int pageSize = 10)
         {
-            var encounters = _dbContext.Encounters.Where(e => e.Patient.Id == patientId);
+            var encounters = _dbContext.Encounters.Where(e => e.Patient.Id == patientId).Include(e => e.Observations);
 
             var filteredData = encounters.Skip((page - 1) * pageSize)
                                          .Take(pageSize)
@@ -28,7 +28,7 @@ namespace HealthJournal.Repository
             var result = new EncounterSearchDto()
             {
                 Encounters = data,
-                TotalCount = filteredData.Count()
+                TotalCount = encounters.Count()
             };
 
             return result;

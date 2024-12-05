@@ -23,6 +23,7 @@ namespace HealthJournal.Mappers
                 Date = encounter.Date,
                 Observations = ObservationMapper.ToObservationDtos(encounter.Observations),
                 PatientId = encounter.PatientId,
+                Id = encounter.Id
             };
         }
 

@@ -33,7 +33,9 @@ namespace HealthJournal.Controllers
 
             if (!result.Succeeded) return Unauthorized("Password or email incorrect");
 
-            var newUser = new NewUserDto { Email = user.Email, Token = _tokenService.CreateToken(user).Result };
+            var role = await _userManager.GetRolesAsync(user);
+
+            var newUser = new NewUserDto { Email = user.Email, Token = _tokenService.CreateToken(user).Result, Role = role.FirstOrDefault() };
             return Ok(newUser);
         }
 
@@ -62,7 +64,8 @@ namespace HealthJournal.Controllers
             var userDto = new NewUserDto
             {
                 Email = user.Email,
-                Token = _tokenService.CreateToken(user).Result
+                Token = _tokenService.CreateToken(user).Result,
+                Role = "Patient",
             };
 
             return Ok(userDto);
